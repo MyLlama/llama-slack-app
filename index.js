@@ -20,106 +20,79 @@ app.event('app_home_opened', ({event, say, client}) => {
         // console.log(event.user);
     }
     if(event.tab === "home") {
-    try {
-        const result = client.views.publish({
-          user_id: event.user,
-          view: {
-              type: 'home',
-              callback_id: 'home_view',
-                blocks: [
-                    {
-                        "type": "header",
-                        "text": {
-                            "type": "plain_text",
-                            "text": ":star: Recommended",
-                            "emoji": true
-                        }
-                    },
-                    {
-                        "type": "divider"
-                    },
-                    {
-                        "type": "actions",
-                        "elements": [
-                            {
-                                "type": "static_select",
-                                "placeholder": {
-                                    "type": "plain_text",
-                                    "text": "Select an activity",
-                                    "emoji": true
-                                },
-                                "options": [
-                                    {
-                                        "text": {
-                                            "type": "plain_text",
-                                            "text": "Short break",
-                                            "emoji": true
-                                        },
-                                        "value": "value-0"
-                                    },
-                                    {
-                                        "text": {
-                                            "type": "plain_text",
-                                            "text": "Take a deep breath",
-                                            "emoji": true
-                                        },
-                                        "value": "value-1"
-                                    },
-                                    {
-                                        "text": {
-                                            "type": "plain_text",
-                                            "text": "Desk yoga",
-                                            "emoji": true
-                                        },
-                                        "value": "value-2"
-                                    }
-                                ],
-                                "action_id": "activity"
+        try {
+            client.views.publish({
+                user_id: event.user,
+                view: {
+                    type: 'home',
+                    callback_id: 'home_view',
+                    blocks: [
+                        {
+                            "type": "header",
+                            "text": {
+                                "type": "plain_text",
+                                "text": ":star: Recommended",
+                                "emoji": true
                             }
-                        ]
-                    }
-                ]
-          }
-        });
-
-        app.action('activity', async ({body, ack, client}) => {
-            await ack();
-
-            // access the value of the selected option 
-            console.log(Object.values(body.view.state.values)[0].activity.selected_option.value);
-            client.chat.postMessage({
-                channel: body.user.id,
-                text: "Text message https://youtu.be/EjO6qH9rCOg?si=PRiou71iFLugFbyZ"
-            })
-        });
-  
-        app.action("button", async ({body, ack, client}) => {
-          await ack();
-          console.log(body);
-          try {
-            await client.views.update({
-              view_id: body.view.id,
-              hash: body.view.hash,
-              view: {
-                  type: "home",
-                  callback_id: "home_view",
-                  blocks: [
-                      {
-                          type: 'section',
-                          text: {
-                              type: 'mrkdwn',
-                              text: "`The button was clicked!!!` :white_check_mark:"
-                          }
-                      }
-                  ]
-              }
+                        },
+                        {
+                            "type": "divider"
+                        },
+                        {
+                            "type": "actions",
+                            "elements": [
+                                {
+                                    "type": "static_select",
+                                    "placeholder": {
+                                        "type": "plain_text",
+                                        "text": "Select an activity",
+                                        "emoji": true
+                                    },
+                                    "options": [
+                                        {
+                                            "text": {
+                                                "type": "plain_text",
+                                                "text": "Short break",
+                                                "emoji": true
+                                            },
+                                            "value": "value-0"
+                                        },
+                                        {
+                                            "text": {
+                                                "type": "plain_text",
+                                                "text": "Take a deep breath",
+                                                "emoji": true
+                                            },
+                                            "value": "value-1"
+                                        },
+                                        {
+                                            "text": {
+                                                "type": "plain_text",
+                                                "text": "Desk yoga",
+                                                "emoji": true
+                                            },
+                                            "value": "value-2"
+                                        }
+                                    ],
+                                    "action_id": "activity"
+                                }
+                            ]
+                        }
+                    ]
+                }
             });
-          } catch (error) {
-              console.log(error);
-          }
-        });
-      } catch (error) {
-          console.log(error);
-      }
+
+            app.action('activity', async ({body, ack, client}) => {
+                await ack();
+                // access the value of the selected option 
+                console.log(Object.values(body.view.state.values)[0].activity.selected_option.value);
+                client.chat.postMessage({
+                    channel: body.user.id,
+                    text: "Text message https://youtu.be/EjO6qH9rCOg?si=PRiou71iFLugFbyZ"
+                })
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }  
 });
